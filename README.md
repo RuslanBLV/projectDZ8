@@ -17,6 +17,19 @@
    pip install -r requirements.txt
    ```
    
+## Тесты
+
+Так же в репозитории "tests" есть функции для проверки каждого модуля на возможные ошибки
+
+1. Чтобы протестировать все модули, нужно добавить в poetry pytests:
+   ```bash
+   poetry add --group dev pytest pytest-cov
+   ```
+2. В консоли наберите:
+   ```bash
+   pytest
+   ```
+   
 ## Использование
 
 Примеры использования функций:
@@ -35,3 +48,6 @@ executed_transactions = filter_by_state(transactions)
 sorted_transactions = sort_by_date(transactions)
 ```
 
+## Тесты
+
+Так же в репозитории "tests" есть функции для проверки каждого модуля на возможные ошибки
