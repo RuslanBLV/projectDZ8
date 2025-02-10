@@ -12,5 +12,3 @@ def get_mask_account(account_number: str) -> str:
     if len(account_number) != 20:
         return "Неправильно набран счет"
     return f"**{account_number[-4:]}"
-
-
