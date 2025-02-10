@@ -1,4 +1,4 @@
-def mask_account_card(account_number: str) -> str:
+def mask_account_card(account_number: list):
     """Маскировка номера или счета"""
     numbers = ""
     letters = ""

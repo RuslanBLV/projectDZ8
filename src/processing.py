@@ -1,5 +1,5 @@
-def filter_by_state(stats: list) -> list:
-    """ Сортировка по ключу "state": "EXECUTED" или "CANCELED" """
+def filter_by_state(stats: list) -> str:
+    """Сортировка по ключу "state": "EXECUTED" или "CANCELED" """
     executed = []
     canceled = []
     for stat in stats:
@@ -15,14 +15,14 @@ f"{canceled}"""
 f"{executed}"""
     elif executed == [] and canceled == []:
         return "нет данных по статусу CANCELED и EXECUTED"
-    return (f"""{executed}
-{canceled}""")
+    return f"""{executed}
+{canceled}"""
 
-def sort_by_date(data: str, reverse: bool=True) -> list:
+
+def sort_by_date(data: list, reverse: bool = True):
     """Сортировка даты по убыванию"""
     for list_data in data:
         if len(list_data["date"]) == 26:
-            return sorted(data, key= lambda x: x["date"], reverse=reverse)
+            return sorted(data, key=lambda x: x["date"], reverse=reverse)
         else:
             return "Неверная дата в списке"
-

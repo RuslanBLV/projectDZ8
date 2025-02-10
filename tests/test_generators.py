@@ -23,7 +23,7 @@ def test_transaction_descriptions():
     assert (next(right)) == "Перевод со счета на счет"
     assert (next(right)) == "Перевод с карты на карту"
     clear_list = transaction_descriptions(transactions_clear)
-    assert (next(clear_list)) == "Список закончился"
+    assert (next(clear_list)) == "Список пуст"
     limit_list = transaction_descriptions(transactions)
     assert (next(limit_list)) == "Перевод организации"
     assert (next(limit_list)) == "Перевод со счета на счет"

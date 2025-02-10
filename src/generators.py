@@ -26,12 +26,16 @@ transactions = [{"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08
                      "from": "Visa Platinum 1246377376343588",
                      "to": "Счет 14211924144426031657"}]
 
-transactions_clear = []
+transactions_clear = str([])
+
 
 def filter_by_currency(transactions: list, currency: str):
     """Выводит транзакции по запросу валюты"""
     error = "Список пуст"
-    if len(transactions) != 0:
+    if transactions == "[]":
+        yield error
+        return
+    elif len(transactions) != 0:
         if currency == "USD" or currency == "RUB":
             for i in transactions:
                 if i["operationAmount"]["currency"]["code"] == currency:
@@ -39,13 +43,14 @@ def filter_by_currency(transactions: list, currency: str):
         elif currency != "USD" and currency != "RUB":
             yield "Нет такой валюты"
             return
-    elif len(transactions) == 0:
-        yield error
-        return
+
 
 
 def transaction_descriptions(transactions: list):
     """Выводит какая операция была произведена"""
+    if transactions == "[]":
+        yield "Список пуст"
+        return
     limit = 0
     for i in transactions:
         limit += 1

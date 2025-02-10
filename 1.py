@@ -27,11 +27,14 @@ from src.generators import filter_by_currency, transaction_descriptions, card_nu
 #for i in a:
     #print(i)
 
-a = 11
-b = 12
-if a < 11 or b > 10:
-    print("dd")
-
+#a = 11
+#b = 12
+#if a < 11 or b > 10:
+#    print("dd")
+f = len(transactions_clear)
+print(f)
+if transactions_clear == "[]":
+    print("dasd")
 
 
 
