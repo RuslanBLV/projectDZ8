@@ -95,7 +95,7 @@ def transaction_descriptions(transactions: list):
 
 
 def card_number_generator(range_start: int, range_stop: int):
-    """генерирует номер карт"""
+    """ генерирует номер карт """
     if range_start < 1 or range_stop > 9999999999999999:
         yield "Неверный лимит"
         return
