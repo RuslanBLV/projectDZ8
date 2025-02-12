@@ -41,9 +41,9 @@ def test_card_number_generator():
                              "0000 0000 0000 0005\n0000 0000 0000 0006\n"
                              "0000 0000 0000 0007\n0000 0000 0000 0008\n"
                              "0000 0000 0000 0009\n0000 0000 0000 0010")
-    error = card_number_generator(1, 100000000000000001)
+    error = card_number_generator(1, 10000000000000000)
     assert (next(error)) == "Неверный лимит"
-    max_numbers = card_number_generator(9999999999999990, 10000000000000000)
+    max_numbers = card_number_generator(9999999999999990, 9999999999999999)
     assert (next(max_numbers)) == ("9999 9999 9999 9990\n9999 9999 9999 9991\n"
                                    "9999 9999 9999 9992\n9999 9999 9999 9993\n"
                                    "9999 9999 9999 9994\n9999 9999 9999 9995\n"

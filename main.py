@@ -16,5 +16,5 @@ from src.generators import filter_by_currency, transaction_descriptions, card_nu
 #for _ in range(8):
     #print(next(descriptions))
 
-#for card_number in card_number_generator(9999999999999900, 10000000000000000):
+#for card_number in card_number_generator(-1, 9999999999999999):
     #print(card_number)

@@ -96,73 +96,13 @@ def transaction_descriptions(transactions: list):
 
 def card_number_generator(range_start: int, range_stop: int):
     """генерирует номер карт"""
-    range_stop += 1
-    if range_stop > 10000000000000001 or range_start > 10000000000000001:
+    if range_start < 1 or range_stop > 9999999999999999:
         yield "Неверный лимит"
         return
-    range_list = range(range_start, range_stop)
-    generator = [x for x in range_list]
-    result_list = []
-    for i in generator:
-        if i < 10:
-            result = f"0000 0000 0000 000{i}"
-            result_list.append(result)
-        elif 100 > i >= 10:
-            result = f"0000 0000 0000 00{i}"
-            result_list.append(result)
-        elif 1000 > i >= 100:
-            result = f"0000 0000 0000 0{i}"
-            result_list.append(result)
-        elif 10000 > i >= 1000:
-            result = f"0000 0000 0000 {i}"
-            result_list.append(result)
-        elif 100000 > i >= 10000:
-            i_srt = str(i)
-            result = f"0000 0000 000{i_srt[0]} {i_srt[1:5]}"
-            result_list.append(result)
-        elif 1000000 > i >= 100000:
-            i_srt = str(i)
-            result = f"0000 0000 00{i_srt[0:2]} {i_srt[2:6]}"
-            result_list.append(result)
-        elif 10000000 > i >= 1000000:
-            i_srt = str(i)
-            result = f"0000 0000 0{i_srt[0:3]} {i_srt[3:7]}"
-            result_list.append(result)
-        elif 100000000 > i >= 10000000:
-            i_srt = str(i)
-            result = f"0000 0000 {i_srt[0:4]} {i_srt[4:8]}"
-            result_list.append(result)
-        elif 1000000000 > i >= 100000000:
-            i_srt = str(i)
-            result = f"0000 000{i_srt[0]} {i_srt[1:5]} {i_srt[5:9]}"
-            result_list.append(result)
-        elif 10000000000 > i >= 1000000000:
-            i_srt = str(i)
-            result = f"0000 00{i_srt[0:2]} {i_srt[2:6]} {i_srt[6:10]}"
-            result_list.append(result)
-        elif 100000000000 > i >= 10000000000:
-            i_srt = str(i)
-            result = f"0000 0{i_srt[0:3]} {i_srt[3:7]} {i_srt[7:11]}"
-            result_list.append(result)
-        elif 1000000000000 > i >= 100000000000:
-            i_srt = str(i)
-            result = f"0000 {i_srt[0:4]} {i_srt[4:8]} {i_srt[8:12]}"
-            result_list.append(result)
-        elif 10000000000000 > i >= 1000000000000:
-            i_srt = str(i)
-            result = f"000{i_srt[0]} {i_srt[1:5]} {i_srt[5:9]} {i_srt[9:13]}"
-            result_list.append(result)
-        elif 100000000000000 > i >= 10000000000000:
-            i_srt = str(i)
-            result = f"00{i_srt[0:2]} {i_srt[2:6]} {i_srt[6:10]} {i_srt[10:14]}"
-            result_list.append(result)
-        elif 1000000000000000 > i >= 100000000000000:
-            i_srt = str(i)
-            result = f"0{i_srt[0:3]} {i_srt[3:7]} {i_srt[7:11]} {i_srt[11:15]}"
-            result_list.append(result)
-        elif 10000000000000000 > i >= 1000000000000000:
-            i_srt = str(i)
-            result = f"{i_srt[0:4]} {i_srt[4:8]} {i_srt[8:12]} {i_srt[12:16]}"
-            result_list.append(result)
-    text = "\n".join(result_list)
+    numbers = []
+    for number in range(range_start, range_stop + 1):
+        f = str("{:16d}".format(number)).replace(' ', "0")
+        c = f"{f[0:4]} {f[4:8]} {f[8:12]} {f[12:]}"
+        numbers.append(c)
+    text = "\n".join(numbers)
     yield text
