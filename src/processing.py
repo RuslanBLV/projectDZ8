@@ -1,3 +1,7 @@
+from decorators import log
+
+
+@log()
 def filter_by_state(stats: list) -> str:
     """Сортировка по ключу "state": "EXECUTED" или "CANCELED" """
     executed = []
@@ -19,6 +23,7 @@ f"{executed}"""
 {canceled}"""
 
 
+@log()
 def sort_by_date(data: list, reverse: bool = True):
     """Сортировка даты по убыванию"""
     for list_data in data:
