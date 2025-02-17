@@ -1,3 +1,6 @@
+from decorators import log, log_generator
+
+
 transactions = [
     {
         "id": 939719570,
@@ -64,6 +67,7 @@ transactions = [
 transactions_clear = str([])
 
 
+@log_generator()
 def filter_by_currency(transactions: list, currency: str):
     """Выводит транзакции по запросу валюты"""
     error = "Список пуст"
@@ -80,6 +84,7 @@ def filter_by_currency(transactions: list, currency: str):
             return
 
 
+@log_generator()
 def transaction_descriptions(transactions: list):
     """Выводит какая операция была произведена"""
     if transactions == "[]":
@@ -92,8 +97,10 @@ def transaction_descriptions(transactions: list):
     if limit == len(transactions):
         while True:
             yield "Список закончился"
+            break
 
 
+@log_generator()
 def card_number_generator(range_start: int, range_stop: int):
     """ генерирует номер карт """
     if range_start < 1 or range_stop > 9999999999999999:

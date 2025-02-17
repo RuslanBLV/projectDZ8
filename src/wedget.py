@@ -1,3 +1,6 @@
+from decorators import log
+
+@log()
 def mask_account_card(account_number: list):
     """Маскировка номера или счета"""
     numbers = ""
@@ -30,7 +33,7 @@ def mask_account_card(account_number: list):
     else:
         return "Вы ввели неверное название карты или счета"
 
-
+@log()
 def get_date(data: str) -> str:
     """Сортировка даты"""
     if len(data) == 26:
