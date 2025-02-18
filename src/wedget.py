@@ -23,15 +23,15 @@ def mask_account_card(account_number: list):
                 mask_numbers = f"**{numbers[-4:]}"
                 return letters + mask_numbers
             else:
-                return "Неверный счет"
+                return "Invalid account"
         elif letters != "Счет ":
             if len(numbers) == 16:
                 mask_numbers = f"{numbers[:4]} {numbers[4:6]}** **** {numbers[-4:]}"
                 return letters + mask_numbers
             else:
-                return "Неверный номер карты"
+                return "Invalid card number"
     else:
-        return "Вы ввели неверное название карты или счета"
+        return "You entered an incorrect card or account name"
 
 @log()
 def get_date(data: str) -> str:
@@ -47,6 +47,6 @@ def get_date(data: str) -> str:
             new_data = f"{data[8:10]}.{data[5:7]}.{data[0:4]}"
             return new_data
         else:
-            return "Неверная дата"
+            return "Invalid date"
     else:
-        return "Неверная дата"
+        return "Invalid date"

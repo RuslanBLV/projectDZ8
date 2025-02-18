@@ -7,14 +7,14 @@ def test_get_mask_card_number():
 
 
 def test_get_mask_card_number_len():
-    assert get_mask_card_number("") == "Неправильно набран номер карты"
+    assert get_mask_card_number("") == "wrong number"
 
 
 def test_get_mask_account():
     assert get_mask_account("73654108430135874305") == "**4305"
 
 def test_get_mask_account_len():
-    assert get_mask_account("") == "Неправильно набран счет"
+        assert get_mask_account("") == "Incorrect account entered"
 
 
 

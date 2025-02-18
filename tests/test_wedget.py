@@ -13,7 +13,7 @@ def test_mask_account_card(card_and_account, expected):
 
 def test_mask_account_card_error():
     """Ошибка в наборе названия карты или счета"""
-    assert mask_account_card("errorname 7000792289606361") == "Вы ввели неверное название карты или счета"
+    assert mask_account_card("errorname 7000792289606361") == "You entered an incorrect card or account name"
 
 
 def test_mask_account_numbers():
@@ -30,10 +30,10 @@ def test_get_data():
     """Проверка правильности сортировки даты"""
     assert get_date("2024-03-11T02:26:18.671407") == "11.03.2024"
 
-@pytest.mark.parametrize("data_error, expected", [("2024/03/11T02:26:18.671407", "Неверная дата"),
-                                                  ("2024-03-11T02-26-18-671407", "Неверная дата"),
-                                                  ("2024.03.11T02.26.18.671407", "Неверная дата"),
-                                                  ("2024:03:11T02:26:18.671407", "Неверная дата")])
+@pytest.mark.parametrize("data_error, expected", [("2024/03/11T02:26:18.671407", "Invalid date"),
+                                                  ("2024-03-11T02-26-18-671407", "Invalid date"),
+                                                  ("2024.03.11T02.26.18.671407", "Invalid date"),
+                                                  ("2024:03:11T02:26:18.671407", "Invalid date")])
 def test_get_data_error(data_error, expected):
     """Возможные ошибки ввода даты для сортировки"""
     assert get_date(data_error) == expected

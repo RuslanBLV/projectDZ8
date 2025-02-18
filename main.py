@@ -3,7 +3,7 @@ from src.processing import filter_by_state, sort_by_date
 from src.generators import filter_by_currency, transaction_descriptions, card_number_generator, transactions,transactions_clear
 from src.masks import get_mask_account, get_mask_card_number
 
-#print(get_mask_card_number("7000792289606361"))
+print(get_mask_card_number(""))
 #print(get_mask_account("35383033474447895560"))
 #print(mask_account_card("Maestro 7000792289606361"))
 # print(mask_account_card("Счет 35383033474447895560"))
@@ -15,9 +15,7 @@ from src.masks import get_mask_account, get_mask_card_number
 # for i in range(2):
 #     print(next(usd_transactions))
 #
-descriptions = transaction_descriptions(transactions)
-for _ in range(8):
-    print(next(descriptions))
+
 
 # for card_number in card_number_generator(1, 10):
 #     print(card_number)
