@@ -1,5 +1,6 @@
 
-def log(filename: str = None):
+def log(filename=None):
+    """Обрабатывает каждую функцию и пишет результат в файл .txt либо в консоль"""
     def wrapper(func):
         def inner(*args, **kwargs):
             try:
@@ -9,21 +10,20 @@ def log(filename: str = None):
                     my_file.write(f"{func.__name__} ok: {result}\n")
                     my_file.close()
                 else:
-                   print(f"{func.__name__} ok: {result}\n")
-                   return "Конец декоратора"
+                    print(f"{func.__name__} ok: {result}\n")
             except Exception as error:
                 if filename is not None:
                     my_file = open(filename, "a")
                     my_file.write(f"{func.__name__} error: {error}\n")
                     my_file.close()
                 else:
-                    print(f"{func.__name__} error: {error}\n")
-                    return "Конец декоратора"
+                    print(f"{func.__name__} ok: {error}\n")
         return inner
     return wrapper
 
 
 def log_generator(filename: str = None):
+    """Обрабатывает каждую функцию и пишет результат в файл .txt либо в консоль"""
     def wrapper(func):
         def inner(*args, **kwargs):
             try:
