@@ -83,7 +83,6 @@ def filter_by_currency(transactions: list, currency: str):
             yield "Нет такой валюты"
             return
 
-
 @log_generator()
 def transaction_descriptions(transactions: list):
     """Выводит какая операция была произведена"""

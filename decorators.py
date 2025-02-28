@@ -10,14 +10,14 @@ def log(filename=None):
                     my_file.write(f"{func.__name__} ok: {result}\n")
                     my_file.close()
                 else:
-                    print(f"{func.__name__} ok: {result}\n")
+                    return f"{func.__name__} ok: {result}\n"
             except Exception as error:
                 if filename is not None:
                     my_file = open(filename, "a")
                     my_file.write(f"{func.__name__} error: {error}\n")
                     my_file.close()
                 else:
-                    print(f"{func.__name__} ok: {error}\n")
+                    return f"{func.__name__} ok: {error}\n"
         return inner
     return wrapper
 
