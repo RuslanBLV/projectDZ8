@@ -8,82 +8,72 @@ from src.processing import filter_by_state, sort_by_date
 
 
 @pytest.mark.parametrize("card_numbers, expected",
-                         [("7000792289606361", "get_mask_card_number ok: 7000 79** **** 6361\n\n"),
-                          ("7000792284625144", "get_mask_card_number ok: 7000 79** **** 5144\n\n"),
-                          ("7000792784321548", "get_mask_card_number ok: 7000 79** **** 1548\n\n"),
-                          ("7000746848516547", "get_mask_card_number ok: 7000 74** **** 6547\n\n"),
-                          ("", "get_mask_card_number ok: wrong number\n\n"),
-                          ("7000792284625144515415", "get_mask_card_number ok: wrong number\n\n")])
-def test_log_get_mask_card_number(capsys, card_numbers, expected):
-    get_mask_card_number(card_numbers)
-    captured = capsys.readouterr()
-    assert captured.out == expected
+                         [("7000792289606361", "get_mask_card_number ok: 7000 79** **** 6361\n"),
+                          ("7000792284625144", "get_mask_card_number ok: 7000 79** **** 5144\n"),
+                          ("7000792784321548", "get_mask_card_number ok: 7000 79** **** 1548\n"),
+                          ("7000746848516547", "get_mask_card_number ok: 7000 74** **** 6547\n"),
+                          ("", "get_mask_card_number ok: wrong number\n"),
+                          ("7000792284625144515415", "get_mask_card_number ok: wrong number\n")])
+def test_log_get_mask_card_number(card_numbers, expected):
+    assert get_mask_card_number(card_numbers) == expected
 
 
-@pytest.mark.parametrize("card_numbers, expected", [("35383033474447895560", "get_mask_account ok: **5560\n\n"),
-                                                    ("35383033474447484114", "get_mask_account ok: **4114\n\n"),
-                                                    ("35383033474156454788", "get_mask_account ok: **4788\n\n"),
-                                                    ("", "get_mask_account ok: Incorrect account entered\n\n"),
+@pytest.mark.parametrize("card_numbers, expected", [("35383033474447895560", "get_mask_account ok: **5560\n"),
+                                                    ("35383033474447484114", "get_mask_account ok: **4114\n"),
+                                                    ("35383033474156454788", "get_mask_account ok: **4788\n"),
+                                                    ("", "get_mask_account ok: Incorrect account entered\n"),
                                                     ("3538303347415645478854551", "get_mask_account ok: Incorrect "
-                                                                                  "account entered\n\n")])
-def test_log_get_mask_account(capsys, card_numbers, expected):
-    get_mask_account(card_numbers)
-    captured = capsys.readouterr()
-    assert captured.out == expected
+                                                                                  "account entered\n")])
+def test_log_get_mask_account(card_numbers, expected):
+    assert get_mask_account(card_numbers) == expected
 
 
-def test_log_filter_by_state(capsys):
+def test_log_filter_by_state():
     list_state = [{'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
                   {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'},
                   {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},
                   {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}]
-    filter_by_state(list_state)
-    captured = capsys.readouterr()
-    assert captured.out == ("filter_by_state ok: [{'id': 41428829, 'state': 'EXECUTED', 'date': "
+    assert filter_by_state(list_state) == ("filter_by_state ok: [{'id': 41428829, 'state': 'EXECUTED', 'date': "
                             "'2019-07-03T18:35:29.512364'},"
                             " {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}]\n"
                             "[{'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},"
-                            " {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}]\n\n")
+                            " {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}]\n")
 
 
-def test_log_sort_by_date(capsys):
-    sort_by_date([{'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
+def test_log_sort_by_date():
+    date = sort_by_date([{'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
                   {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'},
                   {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},
                   {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}])
-    captured = capsys.readouterr()
-    assert captured.out == ("sort_by_date ok: [{'id': 41428829, 'state': 'EXECUTED', 'date': "
+
+    assert date == ("sort_by_date ok: [{'id': 41428829, 'state': 'EXECUTED', 'date': "
                             "'2019-07-03T18:35:29.512364'},"
                             " {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'},"
                             " {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},"
-                            " {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}]\n\n")
+                            " {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}]\n")
 
 
 @pytest.mark.parametrize("card_and_account, expected",
                          [("Visa Platinum 7000792289606361", "mask_account_card ok: Visa Platinum 7000 79** **** "
-                                                             "6361\n\n"),
-                          ("Maestro 7000792289606361", "mask_account_card ok: Maestro 7000 79** **** 6361\n\n"),
-                          ("Счет 73654108430135874305", "mask_account_card ok: Счет **4305\n\n"),
-                          ("Счет 35383033474447895560", "mask_account_card ok: Счет **5560\n\n"),
-                          ("Счет 35383033474447895560456111", "mask_account_card ok: Invalid account\n\n"),
-                          ("Maestro 7000792289606361545154154", "mask_account_card ok: Invalid card number\n\n"),
+                                                             "6361\n"),
+                          ("Maestro 7000792289606361", "mask_account_card ok: Maestro 7000 79** **** 6361\n"),
+                          ("Счет 73654108430135874305", "mask_account_card ok: Счет **4305\n"),
+                          ("Счет 35383033474447895560", "mask_account_card ok: Счет **5560\n"),
+                          ("Счет 35383033474447895560456111", "mask_account_card ok: Invalid account\n"),
+                          ("Maestro 7000792289606361545154154", "mask_account_card ok: Invalid card number\n"),
                           ("Maestroooooo 7000792289606361",
-                           "mask_account_card ok: You entered an incorrect card or account name\n\n")])
-def test_log_mask_account_card(capsys, card_and_account, expected):
-    mask_account_card(card_and_account)
-    captured = capsys.readouterr()
-    assert captured.out == expected
+                           "mask_account_card ok: You entered an incorrect card or account name\n")])
+def test_log_mask_account_card(card_and_account, expected):
+    assert mask_account_card(card_and_account) == expected
 
 
-@pytest.mark.parametrize("data, expected", [("2024-03-11T02:26:18.671407", "get_date ok: 11.03.2024\n\n"),
-                                            ("2021-06-08T01:24:17.784123", "get_date ok: 08.06.2021\n\n"),
-                                            ("2024/03/11T02:26:18.671407", "get_date ok: Invalid date\n\n"),
-                                            ("2024-03-11T02-26-18-671407", "get_date ok: Invalid date\n\n"),
-                                            ("", "get_date ok: Invalid date\n\n")])
-def test_log_get_date(capsys, data, expected):
-    get_date(data)
-    captured = capsys.readouterr()
-    assert captured.out == expected
+@pytest.mark.parametrize("data, expected", [("2024-03-11T02:26:18.671407", "get_date ok: 11.03.2024\n"),
+                                            ("2021-06-08T01:24:17.784123", "get_date ok: 08.06.2021\n"),
+                                            ("2024/03/11T02:26:18.671407", "get_date ok: Invalid date\n"),
+                                            ("2024-03-11T02-26-18-671407", "get_date ok: Invalid date\n"),
+                                            ("", "get_date ok: Invalid date\n")])
+def test_log_get_date(data, expected):
+    assert get_date(data) == expected
 
 
 def test_log_generator_filter_by_currency(capsys):

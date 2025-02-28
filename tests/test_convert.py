@@ -12,20 +12,25 @@ from src.utils import amount_transactions, financial_transactions, result
                                                                    'query': {'from': 'USD', 'to': 'RUB',
                                                                              'amount': 8221.37},
                                                                    'info': {'timestamp': 1740657851, 'rate': 86.786867},
-                                                                   'date': '2025-02-27', 'result': 713506.944748}),
-                          ([{"id": 441945886, "state": "EXECUTED", "date": "2019-08-26T10:50:58.294041",
-                             "operationAmount": {"amount": "31957.58", "currency": {"name": "руб.", "code": "RUB"}},
-                             "description": "Перевод организации", "from": "Maestro 1596837868705199",
-                             "to": "Счет 64686473678894779589"}],
-                           {'success': True, 'query': {'from': 'RUB', 'to': 'RUB', 'amount': 31957.58},
-                            'info': {'timestamp': 1740673992, 'rate': 1}, 'date': '2025-02-27',
-                            'result': 31957.58})])
+                                                                   'date': '2025-02-27', 'result': 713506.944748})])
 @patch('requests.get')
 def test_transactions_convert(mock_get, trans, expected):
+    """Проверка конвертации если валюта не RUB"""
     mock_get.return_value.json.return_value = expected
     assert amount_transactions(trans) == round(mock_get.return_value.json.return_value["result"], 2)
 
 
-@pytest.mark.parametrize("trans, expected", [("../data/operations.json", result), ("../data/operations.jso", [])])
+@pytest.mark.parametrize("trans, expected", [("../data/operations.json", result), ("../data/operations.jso", []), ("../data/operations_clear.json", [])])
 def test_financial_transactions(trans, expected):
+    """Проверка что файл найден и есть ли в нем список"""
     assert financial_transactions(trans) == expected
+
+
+@pytest.mark.parametrize("trans, expected", [([{"id": 441945886,"state": "EXECUTED",
+                                                "date": "2019-08-26T10:50:58.294041",
+                                                "operationAmount": {"amount": "31957.58","currency": {"name": "руб.","code": "RUB"}},
+                                                "description": "Перевод организации", "from": "Maestro 1596837868705199",
+                                                "to": "Счет 64686473678894779589"}], '31957.58')])
+def test_transactions_convert_rub(trans, expected):
+    """Проверка конвертации если валюта RUB"""
+    assert amount_transactions(trans) == expected
