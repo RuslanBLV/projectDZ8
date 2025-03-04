@@ -1,4 +1,3 @@
-
 import pandas as pd
 import csv
 
@@ -13,16 +12,9 @@ def reader_csv(path):
         return trans
 
 
-# print(reader_csv("../transactions.csv"))
-
-
 def reader_excel(path):
     """Выводит список словарей странзакций из файла .xlsx"""
     pf = pd.read_excel(path)
     file_dataframe = pd.DataFrame(pf)
-    file_dict = file_dataframe.to_dict(orient='records')
-    return file_dict
-
-
-# print(reader_excel("../transactions_excel.xlsx"))
-
+    file_dicts = file_dataframe.to_dict(orient='records')
+    return file_dicts

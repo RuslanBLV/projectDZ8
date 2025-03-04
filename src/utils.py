@@ -1,8 +1,6 @@
 import json
-from typing import Any
 from src.convert import transactions_convert
 import logging
-
 
 logger = logging.getLogger("utils")
 file_handler = logging.FileHandler("logs.log")
@@ -13,18 +11,18 @@ logger.setLevel(logging.DEBUG)
 
 
 def financial_transactions(path: str):
-    """ Список всех транзакций """
+    """Список всех транзакций"""
     logger.info(f"Ввод данных: {path}")
     try:
-        with open(path, encoding='utf-8') as transactions:
+        with open(path, encoding="utf-8") as transactions:
             try:
-                logger.info(f"Форматирование в тип 'list'")
+                logger.info("Форматирование в тип 'list'")
                 data = json.load(transactions)
-                if type(data) == list:
+                if isinstance(data, list):
                     logger.info(f"Результат {data}")
                     return data
                 else:
-                    logger.error(f"В файле нет списка")
+                    logger.error("В файле нет списка")
                     print("В файле нет списка")
                     return []
             except json.JSONDecodeError as error:
@@ -37,21 +35,21 @@ def financial_transactions(path: str):
         return []
 
 
-result = financial_transactions('../data/operations.json')
+result = financial_transactions("../data/operations.json")
 
 
 def amount_transactions(trans: list):
     """Вывод 'amount' и условие надо ли отправлять запрос на конвертацию"""
     logger.info(f"Ввод данных: {trans}")
     for transactions in trans:
-        logger.info(f"Обработка валюты")
-        if transactions['operationAmount']['currency']['code'] == "RUB":
-            logger.info(f"Валюта RUB")
-            result = transactions['operationAmount']['amount']
+        logger.info("Обработка валюты")
+        if transactions["operationAmount"]["currency"]["code"] == "RUB":
+            logger.info("Валюта RUB")
+            result = transactions["operationAmount"]["amount"]
             logger.info(f"Результат {result}")
             return result
         else:
-            logger.info(f"Конвертация валюты в RUB")
+            logger.info("Конвертация валюты в RUB")
             amount = transactions_convert(transactions)
             logger.info(f"Результат {amount}")
             return amount

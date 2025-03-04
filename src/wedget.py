@@ -1,5 +1,6 @@
 from decorators import log
 
+
 @log()
 def mask_account_card(account_number: list):
     """Маскировка номера или счета"""
@@ -32,6 +33,7 @@ def mask_account_card(account_number: list):
                 return "Invalid card number"
     else:
         return "You entered an incorrect card or account name"
+
 
 @log()
 def get_date(data: str) -> str:
