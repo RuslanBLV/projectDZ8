@@ -1,4 +1,4 @@
-from decorators import log, log_generator
+from decorators import log_generator
 
 
 transactions = [
@@ -83,6 +83,7 @@ def filter_by_currency(transactions: list, currency: str):
             yield "Нет такой валюты"
             return
 
+
 @log_generator()
 def transaction_descriptions(transactions: list):
     """Выводит какая операция была произведена"""
@@ -101,13 +102,13 @@ def transaction_descriptions(transactions: list):
 
 @log_generator()
 def card_number_generator(range_start: int, range_stop: int):
-    """ генерирует номер карт """
+    """генерирует номер карт"""
     if range_start < 1 or range_stop > 9999999999999999:
         yield "Неверный лимит"
         return
     numbers = []
     for number in range(range_start, range_stop + 1):
-        f = str("{:16d}".format(number)).replace(' ', "0")
+        f = str("{:16d}".format(number)).replace(" ", "0")
         c = f"{f[0:4]} {f[4:8]} {f[8:12]} {f[12:]}"
         numbers.append(c)
     text = "\n".join(numbers)

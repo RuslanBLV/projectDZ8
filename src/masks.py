@@ -10,12 +10,12 @@ logger.setLevel(logging.DEBUG)
 
 
 @log()
-def get_mask_card_number(card_number: str, encoding='utf-8') -> str:
+def get_mask_card_number(card_number: str, encoding="utf-8") -> str:
     """Поступает номер карты и маскируется '***'"""
     logger.info(f"Ввод данных: {card_number}")
-    logger.info(f"Проверка номера карты")
+    logger.info("Проверка номера карты")
     if len(card_number) != 16:
-        logger.error(f"Неверный номер карты")
+        logger.error("Неверный номер карты")
         return "wrong number"
     result = f"{card_number[:4]} {card_number[4:6]}** **** {card_number[12:]}"
     logger.info(f"результат: {result}")
@@ -26,9 +26,9 @@ def get_mask_card_number(card_number: str, encoding='utf-8') -> str:
 def get_mask_account(account_number: str) -> str:
     """Поступает номер счета и маскируется '***'"""
     logger.info(f"Ввод данных: {account_number}")
-    logger.info(f"Проверка номера счета")
+    logger.info("Проверка номера счета")
     if len(account_number) != 20:
-        logger.error(f"Неверный номер счета")
+        logger.error("Неверный номер счета")
         return "Incorrect account entered"
     result = f"**{account_number[-4:]}"
     logger.info(f"результат: {result}")
