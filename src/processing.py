@@ -1,11 +1,15 @@
 from decorators import log
-
+from src.generators import transactions
+from src.utils import financial_transactions, result_list
+import datetime
+import os.path
 
 @log()
 def filter_by_state(stats: list) -> str:
     """Сортировка по ключу "state": "EXECUTED" или "CANCELED" """
     executed = []
     canceled = []
+
     for stat in stats:
         if stat["state"] == "EXECUTED":
             executed.append(stat)
@@ -23,11 +27,23 @@ f"{executed}"""
 {canceled}"""
 
 
-@log()
 def sort_by_date(data: list, reverse: bool = True):
     """Сортировка даты по убыванию"""
     for list_data in data:
-        if len(list_data["date"]) == 26:
-            return sorted(data, key=lambda x: x["date"], reverse=reverse)
+        if len(list_data["date"]) >= 20:
+            filtered_data = filter(lambda x: 'date' in x, data)
+            return sorted(filtered_data, key=lambda x: x["date"], reverse=reverse)
         else:
             return "Неверная дата в списке"
+
+
+list_json_reverse_false = sort_by_date(result_list, reverse=False)
+# print(list_json_reverse_false)
+# json ok
+# csv ok
+# excel ok
+list_x = {}
+if len(list_x) == 0:
+    print("1")
+else:
+    print("0")
