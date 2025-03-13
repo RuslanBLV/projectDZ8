@@ -1,20 +1,35 @@
+# -*- coding: utf-8 -*-
 import pandas as pd
 import csv
+# import datetime
 
 
 def reader_csv(path):
-    """Выводит список словарей странзакций из файла .csv"""
+    """Р’С‹РІРѕРґРёС‚ СЃРїРёСЃРѕРє СЃР»РѕРІР°СЂРµР№ СЃС‚СЂР°РЅР·Р°РєС†РёР№ РёР· С„Р°Р№Р»Р° .csv"""
+    list_csv = []
     with open(path) as file:
-        wine_reviews = csv.DictReader(file)
-        trans = []
+        wine_reviews = csv.DictReader(file, delimiter=";")
         for row in wine_reviews:
-            trans.append(row)
-        return trans
+            if any(row.values()):
+                list_csv.append(row)
+    return list_csv
+
+
+list_scv = reader_csv("../transactions.csv")
+
+# for i in list_scv:
+#     print(datetime.datetime.fromisoformat(i['date']))
 
 
 def reader_excel(path):
-    """Выводит список словарей странзакций из файла .xlsx"""
+    """Р’С‹РІРѕРґРёС‚ СЃРїРёСЃРѕРє СЃР»РѕРІР°СЂРµР№ СЃС‚СЂР°РЅР·Р°РєС†РёР№ РёР· С„Р°Р№Р»Р° .xlsx"""
     pf = pd.read_excel(path)
-    file_dataframe = pd.DataFrame(pf)
+    df_cleaned = pf.dropna(how='all')
+    file_dataframe = pd.DataFrame(df_cleaned)
     file_dicts = file_dataframe.to_dict(orient='records')
     return file_dicts
+
+
+excel_list = reader_excel("../transactions_excel.xlsx")
+
+# print(list_scv)

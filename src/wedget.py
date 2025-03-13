@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 from decorators import log
+from src.reader_csv_xlsx import excel_list
 
 
-@log()
 def mask_account_card(account_number: list):
     """Маскировка номера или счета"""
     numbers = ""
@@ -18,6 +19,11 @@ def mask_account_card(account_number: list):
         "Visa Classic ",
         "MasterCard ",
         "Счет ",
+        "МИР ",
+        "Discover ",
+        "American Express ",
+        "Visa ",
+        "Mastercard ",
     ]:
         if letters == "Счет ":
             if len(numbers) == 20:
@@ -35,16 +41,14 @@ def mask_account_card(account_number: list):
         return "You entered an incorrect card or account name"
 
 
-@log()
 def get_date(data: str) -> str:
     """Сортировка даты"""
-    if len(data) == 26:
+    if len(data) == 20 or 26:
         if (
-            data[4] == "-"
-            and data[7] == "-"
-            and data[13] == ":"
-            and data[16] == ":"
-            and data[19] == "."
+                data[4] == "-"
+                and data[7] == "-"
+                and data[13] == ":"
+                and data[16] == ":"
         ):
             new_data = f"{data[8:10]}.{data[5:7]}.{data[0:4]}"
             return new_data
@@ -52,3 +56,12 @@ def get_date(data: str) -> str:
             return "Invalid date"
     else:
         return "Invalid date"
+
+
+#
+# for i in excel_list:
+#      x = get_date(i["date"])
+#      print(x)
+# x = "2018-07-31T12:25:32.579413"
+# print(get_date("2018-07-31T12:25:32.579413"))
+# print(len(x))

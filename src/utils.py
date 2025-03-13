@@ -1,13 +1,18 @@
 import json
 from src.convert import transactions_convert
 import logging
+import os.path
 
 logger = logging.getLogger("utils")
-file_handler = logging.FileHandler("logs.log")
+file_handler = logging.FileHandler("../logs.log")
 file_formatter = logging.Formatter("%(asctime)s %(filename)s %(levelname)s %(message)s")
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 logger.setLevel(logging.DEBUG)
+
+file_name = "operations.json"
+file_directory = "../data"
+file_path = os.path.join(file_directory, file_name)
 
 
 def financial_transactions(path: str):
@@ -18,9 +23,10 @@ def financial_transactions(path: str):
             try:
                 logger.info("Форматирование в тип 'list'")
                 data = json.load(transactions)
-                if isinstance(data, list):
+                filtered_data = [item for item in data if item]
+                if isinstance(filtered_data, list):
                     logger.info(f"Результат {data}")
-                    return data
+                    return filtered_data
                 else:
                     logger.error("В файле нет списка")
                     print("В файле нет списка")
@@ -35,8 +41,11 @@ def financial_transactions(path: str):
         return []
 
 
-result = financial_transactions("../data/operations.json")
-
+result_list = financial_transactions(file_path)
+# if isinstance(result_list, list):
+#     print(result_list)
+# else:
+#     print("das")
 
 def amount_transactions(trans: list):
     """Вывод 'amount' и условие надо ли отправлять запрос на конвертацию"""
@@ -54,9 +63,10 @@ def amount_transactions(trans: list):
             logger.info(f"Результат {amount}")
             return amount
 
-# print(result)
+# print(result_list)
 # print(amount_transactions(result))
 # amount_transactions([{"id": 441945886, "state": "EXECUTED", "date": "2019-08-26T10:50:58.294041",
 #                       "operationAmount": {"amount": "31957.58", "currency": {"name": "руб.", "code": "RUB"}},
 #                       "description": "Перевод организации", "from": "Maestro 1596837868705199",
 #                       "to": "Счет 64686473678894779589"}])
+# print(financial_transactions("../data/operations.json"))

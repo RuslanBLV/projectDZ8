@@ -6,14 +6,14 @@ def log(filename=None):
             try:
                 result = func(*args, **kwargs)
                 if filename is not None:
-                    my_file = open(filename, "a")
+                    my_file = open(filename, "w")
                     my_file.write(f"{func.__name__} ok: {result}\n")
                     my_file.close()
                 else:
                     return f"{func.__name__} ok: {result}\n"
             except Exception as error:
                 if filename is not None:
-                    my_file = open(filename, "a")
+                    my_file = open(filename, "w")
                     my_file.write(f"{func.__name__} error: {error}\n")
                     my_file.close()
                 else:

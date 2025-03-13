@@ -2,7 +2,7 @@ from decorators import log
 import logging
 
 logger = logging.getLogger("mask")
-file_handler = logging.FileHandler("logs.log")
+file_handler = logging.FileHandler("../logs.log")
 file_formatter = logging.Formatter("%(asctime)s %(filename)s %(levelname)s %(message)s")
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
