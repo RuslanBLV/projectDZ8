@@ -1,8 +1,6 @@
 from decorators import log
-from src.generators import transactions
-from src.utils import financial_transactions, result_list
-import datetime
-import os.path
+from src.utils import result_list
+
 
 @log()
 def filter_by_state(stats: list) -> str:
@@ -38,12 +36,3 @@ def sort_by_date(data: list, reverse: bool = True):
 
 
 list_json_reverse_false = sort_by_date(result_list, reverse=False)
-# print(list_json_reverse_false)
-# json ok
-# csv ok
-# excel ok
-list_x = {}
-if len(list_x) == 0:
-    print("1")
-else:
-    print("0")

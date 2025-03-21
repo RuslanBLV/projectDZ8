@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from decorators import log
-from src.reader_csv_xlsx import excel_list
 
 
 def mask_account_card(account_number: list):
@@ -56,12 +54,3 @@ def get_date(data: str) -> str:
             return "Invalid date"
     else:
         return "Invalid date"
-
-
-#
-# for i in excel_list:
-#      x = get_date(i["date"])
-#      print(x)
-# x = "2018-07-31T12:25:32.579413"
-# print(get_date("2018-07-31T12:25:32.579413"))
-# print(len(x))

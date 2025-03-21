@@ -42,10 +42,7 @@ def financial_transactions(path: str):
 
 
 result_list = financial_transactions(file_path)
-# if isinstance(result_list, list):
-#     print(result_list)
-# else:
-#     print("das")
+
 
 def amount_transactions(trans: list):
     """Вывод 'amount' и условие надо ли отправлять запрос на конвертацию"""

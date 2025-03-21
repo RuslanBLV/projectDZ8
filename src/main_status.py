@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+import re
 from src.utils import result_list
 from src.reader_csv_xlsx import list_scv, excel_list
 from src.processing import sort_by_date
-from wedget import get_date, mask_account_card
+from src.wedget import get_date, mask_account_card
+from collections import Counter
 
 
 def select_type_welcome():
@@ -43,17 +45,24 @@ def status_filter():
 
 
 def sort_reverse_true_false(list_trans):
+    """Сортировка по дате"""
     while True:
         user_data = str(input("Отсортировать операции по дате? Да/Нет\nВведите: ")).lower()
         if user_data == "да":
             while True:
                 user_reverse = str(input("Отсортировать по возрастанию или по убыванию?\nВведите: ")).lower()
                 if user_reverse == "по возрастанию":
-                    reverse_data = sort_by_date(list_trans, reverse=False)
-                    return reverse_data
+                    if len(list_trans) == 0:
+                        return list_trans
+                    else:
+                        reverse_data = sort_by_date(list_trans, reverse=False)
+                        return reverse_data
                 elif user_reverse == "по убыванию":
-                    reverse_data = sort_by_date(list_trans, reverse=True)
-                    return reverse_data
+                    if len(list_trans) == 0:
+                        return list_trans
+                    else:
+                        reverse_data = sort_by_date(list_trans, reverse=True)
+                        return reverse_data
                 else:
                     print("Есть только два ввода: 'по возрастанию' и 'по убыванию'\nВведите: ")
         elif user_data == "нет":
@@ -63,6 +72,7 @@ def sort_reverse_true_false(list_trans):
 
 
 def trans_rub(list_trans):
+    """Выводит рублевые транзакции из json файла"""
     while True:
         user_rub = str(input("Выводить только рублевые тразакции? Да/Нет\nВведите: ")).lower()
         list_rub = []
@@ -78,14 +88,18 @@ def trans_rub(list_trans):
 
 
 def trans_rub_xlsx_csv(list_trans):
+    """Выводит рублевые транзакции из xlsx и csv файлов"""
     while True:
         user_rub = str(input("Выводить только рублевые тразакции? Да/Нет\nВведите: ")).lower()
         list_rub = []
         if user_rub == "да":
-            for i in list_trans:
-                if i["currency_code"] == "RUB":
-                    list_rub.append(i)
-            return list_rub
+            if len(list_trans) == 0:
+                return list_trans
+            else:
+                for i in list_trans:
+                    if i["currency_code"] == "RUB":
+                        list_rub.append(i)
+                return list_rub
         elif user_rub == "нет":
             return list_trans
         else:
@@ -93,6 +107,7 @@ def trans_rub_xlsx_csv(list_trans):
 
 
 def filter_trans_word(list_trans):
+    """Сортировка по слову"""
     while True:
         user_word_question = str(
             input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет\nВведите: ")).lower()
@@ -102,7 +117,10 @@ def filter_trans_word(list_trans):
             for i in list_trans:
                 if i["description"] == user_word:
                     list_trans_sort_word.append(i)
-            return list_trans_sort_word
+            if len(list_trans_sort_word) == 0:
+                return []
+            else:
+                return list_trans_sort_word
         elif user_word_question == "нет":
             return list_trans
         else:
@@ -110,12 +128,14 @@ def filter_trans_word(list_trans):
 
 
 def display_trans(list_trans):
+    """Выводит транзакции на дисплей json файла"""
     try:
-        trans_len = len(list_trans)
-        if trans_len == 0:
+        number = [i["description"] for i in list_trans]
+        number_count = Counter(number)
+        if len(list_trans) == 0:
             print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации")
         else:
-            print(f"Всего банковских операций в выборке: {trans_len}\n")
+            print(f"Всего банковских операций в выборке: {number_count}\n")
             for i in list_trans:
                 if i["description"] == "Открытие вклада":
                     print(f"{get_date(i["date"])} {i["description"]}\n"
@@ -130,12 +150,14 @@ def display_trans(list_trans):
 
 
 def display_trans_xlsx_csv(list_trans):
+    """Выводит транзакции на дисплей xlsx и csv файлов"""
     try:
-        trans_len = len(list_trans)
-        if trans_len == 0:
+        number = [i["description"] for i in list_trans]
+        number_count = Counter(number)
+        if len(list_trans) == 0:
             print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации")
         else:
-            print(f"Всего банковских операций в выборке: {trans_len}\n")
+            print(f"Всего банковских операций в выборке: {number_count}\n")
             for i in list_trans:
                 if i["description"] == "Открытие вклада":
                     print(f"{get_date(i["date"])} {i["description"]}\n"
@@ -150,92 +172,79 @@ def display_trans_xlsx_csv(list_trans):
 
 
 def file_type_status():
-    """Функция отбирает тип файла и какой статус транзакции выводить"""
+    """Логика всех функций"""
     result_func_tupe = select_type_welcome()
     if result_func_tupe == "Для обработки выбран JSON-файл.":
         result_func_status = status_filter()
         if result_func_status == "Операции отфильтрованы по статусу 'EXECUTED'":
-            list_executed = []
-            for i in result_list:
-                if i['state'] == "EXECUTED":
-                    list_executed.append(i)
-            list_reverse_data = sort_reverse_true_false(list_executed)
+            pattern_1 = re.compile(r"EXECUTED")
+            executed_pattern = [result for result in result_list if pattern_1.search(result["state"])]
+            list_reverse_data = sort_reverse_true_false(executed_pattern)
             list_rub = trans_rub(list_reverse_data)
             list_filter_word = filter_trans_word(list_rub)
             return display_trans(list_filter_word)
         elif result_func_status == "Операции отфильтрованы по статусу 'CANCELED'":
-            list_canceled = []
-            for i in result_list:
-                if i['state'] == "CANCELED":
-                    list_canceled.append(i)
-            list_reverse_data = sort_reverse_true_false(list_canceled)
+            pattern_2 = re.compile(r"CANCELED")
+            canceled_pattern = [result for result in result_list if pattern_2.search(result["state"])]
+            list_reverse_data = sort_reverse_true_false(canceled_pattern)
             list_rub = trans_rub(list_reverse_data)
             list_filter_word = filter_trans_word(list_rub)
             return display_trans(list_filter_word)
         elif result_func_status == "Операции отфильтрованы по статусу 'PENDING'":
-            list_pending = []
-            for i in result_list:
-                if i['state'] == "PENDING":
-                    list_pending.append(i)
-            list_reverse_data = sort_reverse_true_false(list_pending)
+            pattern_3 = re.compile(r"PENDING")
+            pending_pattern = [result for result in result_list if pattern_3.search(result["state"])]
+            list_reverse_data = sort_reverse_true_false(pending_pattern)
             list_rub = trans_rub(list_reverse_data)
             list_filter_word = filter_trans_word(list_rub)
             return display_trans(list_filter_word)
     elif result_func_tupe == "Для обработки выбран CSV-файл.":
         result_func_status = status_filter()
         if result_func_status == "Операции отфильтрованы по статусу 'EXECUTED'":
-            list_executed = []
-            for i in list_scv:
-                if i['state'] == "EXECUTED":
-                    list_executed.append(i)
-            list_reverse_data = sort_reverse_true_false(list_executed)
+            pattern_4 = re.compile(r"EXECUTED")
+            executed_pattern = [result for result in list_scv if pattern_4.search(result["state"])]
+            list_reverse_data = sort_reverse_true_false(executed_pattern)
             list_rub = trans_rub_xlsx_csv(list_reverse_data)
             list_filter_word = filter_trans_word(list_rub)
+            print(list_filter_word)
             return display_trans_xlsx_csv(list_filter_word)
         elif result_func_status == "Операции отфильтрованы по статусу 'CANCELED'":
-            list_canceled = []
-            for i in list_scv:
-                if i['state'] == "CANCELED":
-                    list_canceled.append(i)
-            list_reverse_data = sort_reverse_true_false(list_canceled)
+            pattern_5 = re.compile(r"CANCELED")
+            canceled_pattern = [result for result in list_scv if pattern_5.search(result["state"])]
+            list_reverse_data = sort_reverse_true_false(canceled_pattern)
+            print(list_reverse_data)
             list_rub = trans_rub_xlsx_csv(list_reverse_data)
             list_filter_word = filter_trans_word(list_rub)
             return display_trans_xlsx_csv(list_filter_word)
         elif result_func_status == "Операции отфильтрованы по статусу 'PENDING'":
-            list_pending = []
-            for i in list_scv:
-                if i['state'] == "PENDING":
-                    list_pending.append(i)
-            list_reverse_data = sort_reverse_true_false(list_pending)
+            pattern_6 = re.compile(r"PENDING")
+            pending_pattern = [result for result in list_scv if pattern_6.search(result["state"])]
+            print(pending_pattern)
+            list_reverse_data = sort_reverse_true_false(pending_pattern)
+            print(list_reverse_data)
             list_rub = trans_rub_xlsx_csv(list_reverse_data)
+            # print(list_rub)
             list_filter_word = filter_trans_word(list_rub)
             return display_trans_xlsx_csv(list_filter_word)
     elif result_func_tupe == "Для обработки выбран XLSX-файл.":
         result_func_status = status_filter()
         if result_func_status == "Операции отфильтрованы по статусу 'EXECUTED'":
-            list_executed = []
-            for i in excel_list:
-                if i['state'] == "EXECUTED":
-                    list_executed.append(i)
-            list_reverse_data = sort_reverse_true_false(list_executed)
+            pattern_7 = re.compile(r"EXECUTED")
+            executed_pattern = [result for result in excel_list if pattern_7.search(result["state"])]
+            list_reverse_data = sort_reverse_true_false(executed_pattern)
             list_rub = trans_rub_xlsx_csv(list_reverse_data)
             list_filter_word = filter_trans_word(list_rub)
             return display_trans_xlsx_csv(list_filter_word)
         elif result_func_status == "Операции отфильтрованы по статусу 'CANCELED'":
-            list_canceled = []
-            for i in excel_list:
-                if i['state'] == "CANCELED":
-                    list_canceled.append(i)
-            list_reverse_data = sort_reverse_true_false(list_canceled)
+            pattern_8 = re.compile(r"CANCELED")
+            canceled_pattern = [result for result in excel_list if pattern_8.search(result["state"])]
+            list_reverse_data = sort_reverse_true_false(canceled_pattern)
             list_rub = trans_rub_xlsx_csv(list_reverse_data)
             list_filter_word = filter_trans_word(list_rub)
             return display_trans_xlsx_csv(list_filter_word)
         elif result_func_status == "Операции отфильтрованы по статусу 'PENDING'":
-            list_pending = []
-            for i in excel_list:
-                if i['state'] == "PENDING":
-                    list_pending.append(i)
-            list_reverse_data = sort_reverse_true_false(list_pending)
+            pattern_9 = re.compile(r"PENDING")
+            pending_pattern = [result for result in excel_list if pattern_9.search(result["state"])]
+            list_reverse_data = sort_reverse_true_false(pending_pattern)
             list_rub = trans_rub_xlsx_csv(list_reverse_data)
             list_filter_word = filter_trans_word(list_rub)
             return display_trans_xlsx_csv(list_filter_word)

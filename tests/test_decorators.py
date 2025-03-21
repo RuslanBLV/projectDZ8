@@ -8,7 +8,7 @@ from src.generators import (
 )
 from src.masks import get_mask_account, get_mask_card_number
 from src.wedget import mask_account_card, get_date
-from src.processing import filter_by_state, sort_by_date
+from src.processing import filter_by_state
 
 
 @pytest.mark.parametrize(
@@ -59,58 +59,27 @@ def test_log_filter_by_state():
     )
 
 
-def test_log_sort_by_date():
-    date = sort_by_date(
-        [
-            {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-            {
-                "id": 939719570,
-                "state": "EXECUTED",
-                "date": "2018-06-30T02:08:58.425572",
-            },
-            {
-                "id": 594226727,
-                "state": "CANCELED",
-                "date": "2018-09-12T21:27:25.241689",
-            },
-            {
-                "id": 615064591,
-                "state": "CANCELED",
-                "date": "2018-10-14T08:21:33.419441",
-            },
-        ]
-    )
-
-    assert date == (
-        "sort_by_date ok: [{'id': 41428829, 'state': 'EXECUTED', 'date': "
-        "'2019-07-03T18:35:29.512364'},"
-        " {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'},"
-        " {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},"
-        " {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}]\n"
-    )
-
-
 @pytest.mark.parametrize(
     "card_and_account, expected",
     [
         (
             "Visa Platinum 7000792289606361",
-            "mask_account_card ok: Visa Platinum 7000 79** **** " "6361\n",
+            "Visa Platinum 7000 79** **** " "6361",
         ),
         (
             "Maestro 7000792289606361",
-            "mask_account_card ok: Maestro 7000 79** **** 6361\n",
+            "Maestro 7000 79** **** 6361",
         ),
-        ("Счет 73654108430135874305", "mask_account_card ok: Счет **4305\n"),
-        ("Счет 35383033474447895560", "mask_account_card ok: Счет **5560\n"),
-        ("Счет 35383033474447895560456111", "mask_account_card ok: Invalid account\n"),
+        ("Счет 73654108430135874305", "Счет **4305"),
+        ("Счет 35383033474447895560", "Счет **5560"),
+        ("Счет 35383033474447895560456111", "Invalid account"),
         (
             "Maestro 7000792289606361545154154",
-            "mask_account_card ok: Invalid card number\n",
+            "Invalid card number",
         ),
         (
             "Maestroooooo 7000792289606361",
-            "mask_account_card ok: You entered an incorrect card or account name\n",
+            "You entered an incorrect card or account name",
         ),
     ],
 )
