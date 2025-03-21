@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch
-from src.utils import amount_transactions, financial_transactions, result
+from src.utils import amount_transactions, financial_transactions, result_list
 
 
 @pytest.mark.parametrize(
@@ -43,7 +43,7 @@ def test_transactions_convert(mock_get, trans, expected):
 @pytest.mark.parametrize(
     "trans, expected",
     [
-        ("../data/operations.json", result),
+        ("../data/operations.json", result_list),
         ("../data/operations.jso", []),
         ("../data/operations_clear.json", []),
     ],

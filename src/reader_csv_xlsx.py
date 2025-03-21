@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 import csv
-# import datetime
 
 
 def reader_csv(path):
@@ -17,9 +16,6 @@ def reader_csv(path):
 
 list_scv = reader_csv("../transactions.csv")
 
-# for i in list_scv:
-#     print(datetime.datetime.fromisoformat(i['date']))
-
 
 def reader_excel(path):
     """Выводит список словарей странзакций из файла .xlsx"""
@@ -31,5 +27,3 @@ def reader_excel(path):
 
 
 excel_list = reader_excel("../transactions_excel.xlsx")
-
-# print(list_scv)
